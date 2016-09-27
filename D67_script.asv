@@ -1,0 +1,8 @@
+clear all
+close all
+I = imread('D67.gif');
+B = im2bw(I, graythresh(I)); % Threshold image
+s=strel('disk',5,0);
+B=~B;
+I2=imdilate(B,s);
+I3=imerode(I2,s);
