@@ -19,25 +19,25 @@ ty = 0;
 x = [theta; tx; ty]; % initial guess
 
 while true
-    disp('Parameters (theta; tx; ty):'), disp(x);
+ disp('Parameters (theta; tx; ty):'), disp(x);
 
-    y = fRigid(x, pA); % Call function to compute expected measurements
-    dy = reshape(pB,[],1) - y; % new residual
-    J = zeros(2*N,3);
-    % Fill in values of J 
+ y = fRigid(x, pA); % Call function to compute expected measurements
+ dy = reshape(pB,[],1) - y; % new residual
+ J = zeros(2*N,3);
+ % Fill in values of J 
+ 
+ % Estimate J numerically
+ e = 1e-6; % A tiny number
+ J(:,1) = (fRigid(x+[e;0;0],pA) - y)/e;
+ J(:,2) = (fRigid(x+[0;e;0],pA) - y)/e;
+ J(:,3) = (fRigid(x+[0;0;e],pA) - y)/e;
+ dx = pinv(J)*dy;
 
-    % Estimate J numerically
-    e = 1e-6; % A tiny number
-    J(:,1) = (fRigid(x+[e;0;0],pA) - y)/e;
-    J(:,2) = (fRigid(x+[0;e;0],pA) - y)/e;
-    J(:,3) = (fRigid(x+[0;0;e],pA) - y)/e;
-    dx = pinv(J)*dy;
-
-    % Stop if parameters are no longer changing
-    if abs( norm(dx)/norm(x) ) < 1e-6
-        break;
-    end
-    x = x + dx; % add correction
+ % Stop if parameters are no longer changing
+ if abs( norm(dx)/norm(x) ) < 1e-6
+ break;
+ end
+ x = x + dx; % add correction
 end
 
 % Apply transform to image
@@ -45,8 +45,8 @@ theta = x(1);
 tx = x(2);
 ty = x(3);
 A = [cos(theta) -sin(theta) tx;
-     sin(theta) cos(theta)  ty;
-     0          0           1];
+ sin(theta) cos(theta) ty;
+ 0 0 1];
 T = maketform('affine', A');
 I2 = imtransform(IA,T, ...
  'XData', [1 size(IA,2)], ...
