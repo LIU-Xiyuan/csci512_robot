@@ -1,16 +1,11 @@
 close all
-I = imread('lab_rec2.jpg');
+I = imread('lab_rec1.jpg');
 I = rgb2gray(I);
 imshow(I, [])
-% P_M = [ 0 0 8 0 0 8;
-%         18.3 7.5 0 18.3 7.5 0;
-%         6.3 6.3 4.8 13.6 13.6 13.8;
-%         1 1 1 1 1 1];
-
-P_M = [ 0 0 8 0 0 8;
-        18.3 7.5 0 18.3 7.5 0;
-        13.6 13.6 13.8 6.3 6.3 4.8;
-        1 1 1 1 1 1];
+P_M = [ 0       0       10.2    0      0       10.2;
+        19.5    8.9     0       19.5   8.9     0;
+        14.6    14.6    14.8    7.6    7.6     7.6;
+        1       1       1       1      1       1];
 
 % Define camera parameters
 f = 21879; % focal length in pixels
@@ -19,14 +14,15 @@ center=size(I)/2+.5;
 cx = center(1);
 cy = center(2);
 K = [ f 0 cx; 0 f cy; 0 0 1 ]; % intrinsic parameter matrix
-y0 = [ 1319; 1266; % 1
-       1761; 1467; % 2
-       2567; 1347; % 3
-       1339; 1646; % 4
-       1770; 1876; % 5
-       2538; 1867 ]; % 6
+y0 = [ 868; 1652; % 1
+       1277; 1677; % 2
+       2251; 1691; % 3
+       868; 2091; % 4
+       1268; 2182; % 5
+       2231; 2177 ]; % 6
+
 % Make an initial guess of the pose [ax ay az tx ty tz]
-x = [1.5; -1.0; 0.0; 0; 0; 30];
+x = [0; 0; 0; 0; 0; 0];
 % Get predicted image points by substituting in the current pose
 y = fProject(x, P_M, K);
 
