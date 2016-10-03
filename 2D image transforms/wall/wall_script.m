@@ -21,9 +21,9 @@ end
 % (X,Y)=(0,0), with the +X axis to the right and the +Y axis down.
 Pworld1 = [
 0, 0; % Units in cm
-500, 0;
+600, 0;
 0, 184;
-500, 184;
+600, 184;
 ];
 % Compute transform, from corresponding control points
 Tform1 = fitgeotrans(Pimg1,Pworld1,'projective');
